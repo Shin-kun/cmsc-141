@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RegexOperation {
 
-	private ArrayList<String> container;
+	protected ArrayList<String> container;
 	
 	RegexOperation() { }
 

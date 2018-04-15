@@ -10,12 +10,12 @@ package mp2;
 
 
 public class RegularExpression {
-	private static final String FILENAME = "src/mp1/mpa2";
+	private static final String FILENAME = "src/mp2/mpa2.in";
 	
 	
 	public static void main(String[] args) {
-		
-		
+		RegularExpressionReader read = new RegularExpressionReader();
+		read.fileReading(FILENAME);
 		
 	}
 	

@@ -64,24 +64,23 @@ public class RegularExpressionReader {
 	
 	public static void slicingRegexIntoArray(String regexExpression) {
 		
-		while(regexExpression.equals("")) {
+		while(!regexExpression.equals("")) {
 			
 			if(regexExpression.indexOf("*") != -1) { 
 				
 				kleeneStarContainer.add(regexExpression.substring(0, regexExpression.indexOf("*")));
-				regexExpression.replace(regexExpression.substring(0, regexExpression.indexOf("*") + 1) , "");
+				regexExpression = regexExpression.replace(regexExpression.substring(0, regexExpression.indexOf("*") + 1) , "");
 			} else if(regexExpression.indexOf("U") != -1) {
 				// slice between right and left
 
-			
 			
 			} else {
 				
 				regexExpressionInCaseNoOperation = regexExpression;
 				regexExpression = "";
 			}
-			
 		}
+				
 		
 	}
 	
