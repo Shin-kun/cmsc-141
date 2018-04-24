@@ -1,6 +1,7 @@
 package mp2;
 
 import mp2.ExpressionTree;
+import mp2.states.NFA;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class RegularExpressionReader {
 			ExpressionTree tree = new ExpressionTree();
 			ArrayList<Character> augmentedRegexExpression = new ArrayList<Character>();
 			ArrayList<Character> postfix = new ArrayList<Character>();
+			NFA NFAstateDiagram = new NFA();
 			int testcases = Integer.parseInt(bufferRead.readLine());
 			
 			for(int i = 0; i < testcases; i++) {
@@ -26,6 +28,11 @@ public class RegularExpressionReader {
 				
 				tree.postFixTravel(tree.insertExpressionIntoTree(augmentedRegexExpression));
 				postfix = tree.getPostFixExpression();
+				NFAstateDiagram.conjoin(postfix);
+				NFAstateDiagram.printStateDiagram();
+								
+				
+				System.out.println("done");
 				int regexTestCasesNum = Integer.parseInt(bufferRead.readLine());
 				validateStringExpression(regexTestCasesNum, bufferRead);
 			}
@@ -48,7 +55,7 @@ public class RegularExpressionReader {
 			if(index < regexExpression.length() - 1 && 
 				(((regexExpression.charAt(index) == 'a' || regexExpression.charAt(index) == 'b' || regexExpression.charAt(index) == '*') &&
 				(regexExpression.charAt(index+1) == 'a' || regexExpression.charAt(index+1) == 'b' || regexExpression.charAt(index+1) == '(')) 
-				|| (regexExpression.charAt(index) == ')' && (regexExpression.charAt(index+1) == 'a' || regexExpression.charAt(index+1) == 'b'))))	{
+				|| (regexExpression.charAt(index) == ')' && (regexExpression.charAt(index+1) == 'a' || regexExpression.charAt(index+1) == 'b' || regexExpression.charAt(index+1) == '('))))	{
 				
 				augmentedRegex.add('.');
 
