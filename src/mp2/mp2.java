@@ -9,7 +9,7 @@ package mp2;
  */
 
 
-public class RegularExpression {
+public class mp2 {
 	private static final String FILENAME = "src/mp2/mpa2.in";
 	
 	
