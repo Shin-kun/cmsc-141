@@ -14,9 +14,8 @@ public class mp2 {
 	
 	
 	public static void main(String[] args) {
-		RegularExpressionReader read = new RegularExpressionReader();
-		read.fileReading(FILENAME);
-		
+		RegularExpressionReader read = new RegularExpressionReader(FILENAME);
+		read.fileReading();	
 	}
 	
 	

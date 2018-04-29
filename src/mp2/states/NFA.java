@@ -5,9 +5,9 @@ import java.util.Stack;
 
 public class NFA {
 
-	private int laststate;
-	private ArrayList<State> transitions; // used in concatenation to have record of the first state to be concatenated
-	private ArrayList<Integer> states;
+	int laststate;
+	ArrayList<State> transitions; // used in concatenation to have record of the first state to be concatenated
+	ArrayList<Integer> states;
 	private Stack<NFA> incompleteStates;
 	
 	public NFA() {
@@ -73,9 +73,14 @@ public class NFA {
 		for (State state: result.transitions){
             System.out.println("("+ state.vertexFrom +", "+ state.symbol +
                 ", "+ state.vertexTo +")");
-        }   
+        }
+		System.out.println("");
+		
+		for (Integer states : result.states) {
+			System.out.println("State Number : " + states.toString());
+		}
+		
 	}
-	
 	
 	public void conjoinConcatOperation() {
 		System.out.println("");
