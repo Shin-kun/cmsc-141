@@ -1,6 +1,7 @@
 package mp2;
 
 import mp2.ExpressionTree;
+import mp2.states.DFA;
 import mp2.states.NFA;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,6 +14,7 @@ public class RegularExpressionReader {
 	private static ArrayList<Character> postfix;
 	private static ExpressionTree tree;
 	private static NFA NFAstateDiagram;
+	private static DFA DFAstateDiagram;
 	
 	RegularExpressionReader(String filename) {
 		this.filename = filename;
@@ -20,6 +22,7 @@ public class RegularExpressionReader {
 		this.augmentedRegexExpression = new ArrayList<Character>();
 		this.postfix = new ArrayList<Character>();
 		this.NFAstateDiagram = new NFA();
+		this.DFAstateDiagram = new DFA();
 	}
 	
 	public static void fileReading()  {
@@ -37,9 +40,13 @@ public class RegularExpressionReader {
 				postfix = tree.getPostFixExpression();
 				NFAstateDiagram.conjoin(postfix);
 				NFAstateDiagram.printStateDiagram();
-								
 				
 				System.out.println("done");
+				
+				
+				DFAstateDiagram = new DFA(NFAstateDiagram.getNFADiagram());
+				DFAstateDiagram.convertNFAToDFA();
+				DFAstateDiagram.printEclosure();
 				int regexTestCasesNum = Integer.parseInt(bufferRead.readLine());
 				validateStringExpression(regexTestCasesNum, bufferRead);
 			}
