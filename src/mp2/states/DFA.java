@@ -26,30 +26,38 @@ public class DFA {
 	// subset construction algorithm
 	public void convertNFAToDFA() {
 				
-	}
-	
-	public void printEclosure() {
-		for(int i = 0; i < nfaStatesTransitions.size(); i++) {
-			System.out.println("DFA NUMBER: " + i);
-			for(int j = 0; j < nfaStatesTransitions.get(i).size(); j++) {
-				System.out.println("(" + nfaStatesTransitions.get(i).get(j).vertexFrom + ", " + 
-						nfaStatesTransitions.get(i).get(j).symbol + ", " + nfaStatesTransitions.get(i).get(j).vertexTo +
-						")");
-			}
+		eClosure('e', 0);		
+		
+		for(int dfastate = 0; dfastate < nfaStates.size(); dfastate++) {		
+			
+			for(char symbol : inputTable) {
+				nfaStates.add(new LinkedList<Integer>());
+				eClosure(symbol, dfastate);
+				addTransitions(symbol, dfastate);
+				removeDuplicates();
+				removeEmpty();
+			}			
+			addLastStates(dfastate);
 		}
 	}
 		
-	// set of NFA states reachable from NFA state s on E-transitions alone
-	private void eClosure(char transitionSymbol) {		
-		int index = 0;
-		Stack<State> ePossiblePaths = new Stack<State>();
-
-		if(nfaStatesTransitions.size() > 1) {
-			index = nfaStatesTransitions.size() - 1; // the latest
-		}		
+	private void addLastStates(int dfastate) {
+		for(int i = 0; i < nfaStates.get(dfastate).size(); i++) {
+			if(nfaStates.get(dfastate).get(i) == diagramNFA.laststate) {
+				laststates.add(dfastate);
+				return ;
+			}
+		}
+	}
 	
-		for(int i = 0; i < nfaStatesTransitions.get(index).size(); i++) {
-			ePossiblePaths.push(nfaStatesTransitions.get(index).get(i));
+	// set of NFA states reachable from NFA state s on E-transitions alone
+	private void eClosure(char transitionSymbol, int dfastate) {		
+		int nextstate = nfaStates.size() - 1;
+		Stack<Integer> ePossiblePaths = new Stack<Integer>();
+
+		for(int i = 0; i < nfaStates.get(dfastate).size(); i++) {
+			ePossiblePaths.push(nfaStates.get(dfastate).get(i));
+			char tempSymbol = transitionSymbol;
 			for(int j = 0; !ePossiblePaths.isEmpty(); j++) {
 				if(j == diagramNFA.transitions.size()) {
 					j = 0;				
@@ -58,35 +66,84 @@ public class DFA {
 				} else {
 					State state = diagramNFA.transitions.get(j);
 					
-					if(!nfaStatesTransitions.get(index).contains(state)) { // no duplicate	
-//						if(ePossiblePaths.peek().vertexTo != state.vertexFrom) {
-//							while(!ePossiblePaths.isEmpty() && ePossiblePaths.peek().vertexTo == state.vertexFrom) {
-//								ePossiblePaths.pop();
-//								j--;
-//							}	
-//						}
-//						else {
-							if(ePossiblePaths.peek().vertexFrom == state.vertexFrom || ePossiblePaths.peek().vertexTo == state.vertexFrom &&
-								(state.symbol == transitionSymbol || (nfaStatesTransitions.get(index).size() > 0 && state.symbol == 'e'))) {
-								ePossiblePaths.push(state);
-								nfaStatesTransitions.get(index).add(state);
-							}										
-//						}
-					}	
+					if(!nfaStates.get(nextstate).contains(state.vertexTo)) {			
+						if(ePossiblePaths.peek() == state.vertexFrom && state.symbol == transitionSymbol) {
+							ePossiblePaths.push(state.vertexTo);
+							nfaStates.get(nextstate).add(state.vertexTo);
+							transitionSymbol = 'e';
+							j = 0; // there is a chance that when looping, it might go back. meaning in kleene star it would go back to the way it was
+						} 
+					}
 				}
+			}
+			transitionSymbol = tempSymbol;
+		}
+	}
+	
+	private void addTransitions(char transSymbol, int statefrom) {
+		if(nfaStates.get(nfaStates.size() - 1).size() == 0) { 
+			transitions.add(new State(statefrom, -1, transSymbol));	// if negative -1 then the state should not read this input
+		} else {		
+			if(dfaStateHasDuplicateIn() != -1) {
+				int stateTo = dfaStateHasDuplicateIn();
+				transitions.add(new State(statefrom, stateTo, transSymbol));
+			} else {
+				transitions.add(new State(statefrom, nfaStates.size()-1 ,transSymbol));
 			}
 		}
 	}
 	
-	/*public boolean removeEClosureEmptyInputs(char transSymbol) {
-		if(nfaStatesTransitions.get(nfaStatesTransitions.size() - 1).size() > 0) { 
-			for(int i = 0; i < nfaStatesTransitions.get(nfaStatesTransitions.size()-1).size(); i++) {
-				if(nfaStatesTransitions.get(nfaStatesTransitions.size()-1).get(i).symbol == transSymbol) {
-					return true;
-				}
+	
+	public void printStateDiagram() {
+		for(int i = 0; i < nfaStates.size(); i++) {
+			System.out.println("DFA NUMBER: " + i);
+			for(int j = 0; j < nfaStates.get(i).size(); j++) {
+				System.out.print(nfaStates.get(i).get(j) + " ");
 			}
+			System.out.println("");
 		}
-		nfaStatesTransitions.remove(nfaStatesTransitions.size() - 1);
-		return false;
-	}*/
+		
+		for (State state: transitions){
+            System.out.println("("+ state.vertexFrom +", "+ state.symbol +
+                ", "+ state.vertexTo +")");
+        }
+		System.out.println("Laststates: ");
+		for(Integer i : laststates) {
+			System.out.print(i + " ");
+		}
+		
+	}
+		
+	private void removeDuplicates() {
+		if(dfaStateHasDuplicateIn() != -1) {
+			nfaStates.remove(nfaStates.size() - 1);
+		}
+	}
+	
+	private int dfaStateHasDuplicateIn() {
+		for(int dfastate = 0; dfastate < nfaStates.size() - 1; dfastate++) {
+			if(new HashSet<>(nfaStates.get(nfaStates.size() - 1)).equals(new HashSet<>(nfaStates.get(dfastate)))) {
+				return dfastate;
+			}
+		}	
+		return -1;
+	}
+	
+	private void removeEmpty() {
+		if(nfaStates.get(nfaStates.size() - 1).size() == 0) {
+			nfaStates.remove(nfaStates.get(nfaStates.size() - 1));
+		}
+	}
+	
+	public DFA getDfa() {
+		return this;
+	}
+
+	public ArrayList<Integer> getLastStates() {
+		return laststates;
+	}
+	
+	public ArrayList<State> getTransitions() {
+		return transitions;
+	}
 }
