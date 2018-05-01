@@ -13,16 +13,17 @@ public class RegularExpressionReader {
 	private static ArrayList<Character> augmentedRegexExpression;
 	private static ArrayList<Character> postfix;
 	private static ExpressionTree tree;
-	private static NFA NFAstateDiagram;
-	private static DFA DFAstateDiagram;
+	private static NFA nfa;
+	private static DFA dfa;
+	private static ValidateExpression validation;
 	
 	RegularExpressionReader(String filename) {
 		this.filename = filename;
 		this.tree = new ExpressionTree();
 		this.augmentedRegexExpression = new ArrayList<Character>();
 		this.postfix = new ArrayList<Character>();
-		this.NFAstateDiagram = new NFA();
-		this.DFAstateDiagram = new DFA();
+		this.nfa = new NFA();
+		this.dfa = new DFA();
 	}
 	
 	public static void fileReading()  {
@@ -38,23 +39,17 @@ public class RegularExpressionReader {
 				
 				tree.postFixTravel(tree.insertExpressionIntoTree(augmentedRegexExpression));
 				postfix = tree.getPostFixExpression();
-				NFAstateDiagram.conjoin(postfix);
-				NFAstateDiagram.printStateDiagram();
-				
-				System.out.println("done");
-				
-				
-				DFAstateDiagram = new DFA(NFAstateDiagram.getNFADiagram());
-				DFAstateDiagram.convertNFAToDFA();
-				DFAstateDiagram.printEclosure();
+				nfa.conjoin(postfix);
+								
+				dfa = new DFA(nfa.getNfa());
+				dfa.convertNFAToDFA();
 				int regexTestCasesNum = Integer.parseInt(bufferRead.readLine());
 				validateStringExpression(regexTestCasesNum, bufferRead);
 			}
 	
-
 			bufferRead.close();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 			
@@ -75,21 +70,23 @@ public class RegularExpressionReader {
 			}
 		}
 		
-		for(int i = 0; i < augmentedRegex.size(); i++) {
-			System.out.print(augmentedRegex.get(i) + " ");
-		}
-		System.out.println("");
+		
 		return augmentedRegex;
 	}
 	
 	public static void validateStringExpression(int regexTestCasesNum, BufferedReader bufferRead) 
-			throws IOException {
+			throws Exception {
+		validation = new ValidateExpression(dfa.getDfa());
 		
 		for(int i = 0; i < regexTestCasesNum; i++) {
 			
-			String verificationString = bufferRead.readLine();	
-			//TODO verify string
+			String verificationExpression = bufferRead.readLine();	
 			
+			if(validation.checkExpressionIfValid(verificationExpression)) {
+				System.out.println("yes");
+			} else {
+				System.out.println("no");
+			}
 		}
 	}
 
