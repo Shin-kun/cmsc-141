@@ -1,55 +1,31 @@
 package mp2.states;
 
 import java.util.ArrayList;
-import java.util.Queue;
+import java.util.HashSet;
 import java.util.Stack;
-import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class DFA {
 	private final char[] inputTable = {'a','b'};
-	///private ArrayList<Integer> dfaStates;
-	private ArrayList<LinkedList<State>> nfaStatesTransitions;
-	private ArrayList<State> transitions;
-	private ArrayList<State> lastStates;
-	private ArrayList<String> markedDFA;
-	
-	private NFA diagramNFA;
+	ArrayList<LinkedList<Integer>> nfaStates;
+	ArrayList<State> transitions;
+	ArrayList<Integer> laststates;
+	NFA diagramNFA;
 	
 	public DFA() { }
 	
 	public DFA(NFA diagramNFA) {
 		this.diagramNFA = diagramNFA;
-		//this.dfaStates = new ArrayList<Integer>(); //dfa states
-		this.nfaStatesTransitions = new ArrayList<LinkedList<State>>();   //nfa states
-		
+		this.nfaStates = new ArrayList<LinkedList<Integer>>();   //nfa states
 		this.transitions = new ArrayList<State>(); //dfa state transition
-		//this.markedDFA = new ArrayList<String>();
-		this.lastStates = new ArrayList<State>();
-		//this.dfaStates.add(0);
-		//this.markedDFA.add("unchecked");
-		
-		nfaStatesTransitions.add(new LinkedList<State>());
-		nfaStatesTransitions.get(0).add(diagramNFA.transitions.get(0));
+		this.laststates = new ArrayList<Integer>();
+		nfaStates.add(new LinkedList<Integer>());
+		nfaStates.get(0).add(0);
 	}
 		
 	// subset construction algorithm
 	public void convertNFAToDFA() {
-		int travelstate = diagramNFA.states.get(0); //initial 
 				
-		eClosure('e');		
-					
-//		for(int index = 0; index < nfaStatesTransitions.size(); index++) {
-			//markedDFA.get(index).replace("unchecked", "checked");			
-//			for(char symbol: inputTable) {
-//				int i = 0;
-//				nfaStatesTransitions.add(new LinkedList<State>());
-//				eClosure(symbol);
-//			
-//				check for duplicates 
-//			
-//			}
-//		}
 	}
 	
 	public void printEclosure() {
