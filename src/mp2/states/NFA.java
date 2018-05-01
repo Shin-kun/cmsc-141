@@ -37,10 +37,6 @@ public class NFA {
 		}
 	}
 		
-	public NFA getNFADiagram() {
-		return incompleteStates.pop();
-	}
-	
 	public void conjoin(ArrayList<Character> postfix) {
 
 		if(postfix.size() == 0) { return; }
@@ -82,8 +78,7 @@ public class NFA {
 		
 	}
 	
-	public void conjoinConcatOperation() {
-		System.out.println("");
+	private void conjoinConcatOperation() {
 		NFA secondstate = incompleteStates.pop();
 		NFA firststate = incompleteStates.pop();	
 				
@@ -103,7 +98,7 @@ public class NFA {
 		incompleteStates.push(firststate);
 	}
 	
-	public void conjoinUnionOperation() {
+	private void conjoinUnionOperation() {
 		NFA secondstate = incompleteStates.pop();
 		NFA firststate = incompleteStates.pop();
 		NFA result = new NFA(firststate.states.size() + secondstate.states.size() + 2);
@@ -130,7 +125,7 @@ public class NFA {
         incompleteStates.push(result);
 	}
 	
-	public void conjoinStarOperation() {
+	private void conjoinStarOperation() {
 		NFA starstate = incompleteStates.pop();
 		NFA result = new NFA(starstate.states.size() + 2);
 		
@@ -145,8 +140,11 @@ public class NFA {
 		
 		result.laststate = starstate.states.size() + 1;
 		
-		System.out.println("This is result.laststate: " + result.laststate);
 		incompleteStates.push(result);
+	}
+	
+	public NFA getNfa() {
+		return incompleteStates.pop();
 	}
 	
 }
