@@ -89,12 +89,12 @@ public class NFA {
 				state.vertexTo + firststate.states.size() - 1, state.symbol));
 		}
 	
-		for(Integer statenum : secondstate.states) {
-			firststate.states.add(statenum + firststate.states.size() - 1);
+		for(int minusOne = 1, i = 0; i < secondstate.states.size(); i++, minusOne++) {
+			Integer statenum = secondstate.states.get(i);
+			firststate.states.add(statenum + firststate.states.size() - minusOne);			
 		}
-				
-		firststate.laststate = firststate.states.size() + secondstate.states.size() - 2;
-		System.out.println("last state: " + firststate.laststate);
+		
+		firststate.laststate = firststate.states.size() - 1;
 		incompleteStates.push(firststate);
 	}
 	
