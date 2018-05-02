@@ -60,19 +60,38 @@ public class RegularExpressionReader {
 		for(int index = 0; index < regexExpression.length(); index++) {
 			augmentedRegex.add(regexExpression.charAt(index));
 			
-			if(index < regexExpression.length() - 1 && 
-				(((regexExpression.charAt(index) == 'a' || regexExpression.charAt(index) == 'b' || regexExpression.charAt(index) == '*') &&
-				(regexExpression.charAt(index+1) == 'a' || regexExpression.charAt(index+1) == 'b' || regexExpression.charAt(index+1) == '(')) 
-				|| (regexExpression.charAt(index) == ')' && (regexExpression.charAt(index+1) == 'a' || regexExpression.charAt(index+1) == 'b' || regexExpression.charAt(index+1) == '('))))	{
-				
-				augmentedRegex.add('.');
+			if(index < regexExpression.length() - 1) { 
 
+				if(regexExpression.charAt(index) == ')' && regexExpression.charAt(index+1) == '(') {
+					augmentedRegex.add('.');						
+				
+				} else if(regexExpression.charAt(index) == '*' && regexExpression.charAt(index+1) == '(' ) {
+					augmentedRegex.add('.');
+				
+				} else if(regexExpression.charAt(index) == '*' && isAlphabetSymbol(regexExpression.charAt(index+1))) {
+					augmentedRegex.add('.');
+				
+				} else if(regexExpression.charAt(index) == ')' && isAlphabetSymbol(regexExpression.charAt(index+1))) {
+					augmentedRegex.add('.');
+
+				} else if(isAlphabetSymbol(regexExpression.charAt(index)) && regexExpression.charAt(index+1) == '(') {
+					augmentedRegex.add('.');
+				
+				} else if(isAlphabetSymbol(regexExpression.charAt(index)) && isAlphabetSymbol(regexExpression.charAt(index+1))) {
+					augmentedRegex.add('.');
+				}
 			}
 		}
 		
-		
 		return augmentedRegex;
 	}
+	
+	private static boolean isAlphabetSymbol(char symbol) {
+		if(symbol >= 'a' && symbol <= 'z') return true;  
+		return false;
+	}
+	
+	
 	
 	public static void validateStringExpression(int regexTestCasesNum, BufferedReader bufferRead) 
 			throws Exception {
