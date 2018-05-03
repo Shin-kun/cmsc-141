@@ -25,7 +25,7 @@ public class DFA {
 		
 	// subset construction algorithm
 	public void convertNFAToDFA() {
-				
+		if(diagramNFA == null) { return ; }		
 		eClosure('e', 0);		
 		
 		for(int dfastate = 0; dfastate < nfaStates.size(); dfastate++) {		
@@ -82,17 +82,16 @@ public class DFA {
 	
 	private void addTransitions(char transSymbol, int statefrom) {
 		if(nfaStates.get(nfaStates.size() - 1).size() == 0) { 
-			transitions.add(new State(statefrom, -1, transSymbol));	// if negative -1 then the state should not read this input
+			transitions.add(new State(statefrom, -1, transSymbol));	// if negative -1 then the state should not read this input // this is a dead state
 		} else {		
 			if(dfaStateHasDuplicateIn() != -1) {
 				int stateTo = dfaStateHasDuplicateIn();
 				transitions.add(new State(statefrom, stateTo, transSymbol));
 			} else {
-				transitions.add(new State(statefrom, nfaStates.size()-1 ,transSymbol));
+				transitions.add(new State(statefrom, nfaStates.size()-1 ,transSymbol)); 
 			}
 		}
 	}
-	
 	
 	public void printStateDiagram() {
 		for(int i = 0; i < nfaStates.size(); i++) {

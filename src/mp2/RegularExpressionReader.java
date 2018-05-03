@@ -39,7 +39,7 @@ public class RegularExpressionReader {
 				
 				tree.postFixTravel(tree.insertExpressionIntoTree(augmentedRegexExpression));
 				postfix = tree.getPostFixExpression();
-				nfa.conjoin(postfix);
+				nfa.buildNFA(postfix);
 								
 				dfa = new DFA(nfa.getNfa());
 				dfa.convertNFAToDFA();
@@ -87,11 +87,9 @@ public class RegularExpressionReader {
 	}
 	
 	private static boolean isAlphabetSymbol(char symbol) {
-		if(symbol >= 'a' && symbol <= 'z') return true;  
+		if(symbol == 'a' || symbol == 'b') return true;  
 		return false;
 	}
-	
-	
 	
 	public static void validateStringExpression(int regexTestCasesNum, BufferedReader bufferRead) 
 			throws Exception {

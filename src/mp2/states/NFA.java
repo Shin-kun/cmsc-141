@@ -37,7 +37,7 @@ public class NFA {
 		}
 	}
 		
-	public void conjoin(ArrayList<Character> postfix) {
+	public void buildNFA(ArrayList<Character> postfix) {
 
 		if(postfix.size() == 0) { return; }
 		incompleteStates = new Stack<NFA>();
