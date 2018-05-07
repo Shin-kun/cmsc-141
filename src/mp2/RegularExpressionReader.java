@@ -4,7 +4,10 @@ import mp2.ExpressionTree;
 import mp2.states.DFA;
 import mp2.states.NFA;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,7 +31,11 @@ public class RegularExpressionReader {
 	
 	public static void fileReading()  {
 		BufferedReader bufferRead = null;
+		BufferedWriter bufferWrite = null;
+		File outputFile = new File("Alivio.out");
+
 		try {
+			bufferWrite = new BufferedWriter(new FileWriter(outputFile));
 			bufferRead = new BufferedReader(new FileReader(filename));
 			int testcases = Integer.parseInt(bufferRead.readLine());
 			
@@ -44,11 +51,11 @@ public class RegularExpressionReader {
 				dfa = new DFA(nfa.getNfa());
 				dfa.convertNFAToDFA();
 				int regexTestCasesNum = Integer.parseInt(bufferRead.readLine());
-				validateStringExpression(regexTestCasesNum, bufferRead);
+				validateStringExpression(regexTestCasesNum, bufferRead, bufferWrite);
 			}
 	
 			bufferRead.close();
-			
+			bufferWrite.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -91,7 +98,7 @@ public class RegularExpressionReader {
 		return false;
 	}
 	
-	public static void validateStringExpression(int regexTestCasesNum, BufferedReader bufferRead) 
+	public static void validateStringExpression(int regexTestCasesNum, BufferedReader bufferRead, BufferedWriter bufferWrite) 
 			throws Exception {
 		validation = new ValidateExpression(dfa.getDfa());
 		
@@ -100,11 +107,13 @@ public class RegularExpressionReader {
 			String verificationExpression = bufferRead.readLine();	
 			
 			if(validation.checkExpressionIfValid(verificationExpression)) {
-				System.out.println("yes");
+				bufferWrite.write("yes\n");
+				
 			} else {
-				System.out.println("no");
+				bufferWrite.write("no\n");
 			}
 		}
+		
 	}
 
 }
