@@ -1,5 +1,5 @@
-package mp3.turingMachine;
-import mp3.graph.Edge;
+package mp3.resources.turingMachine;
+import mp3.resources.graph.Edge;
 
 /**
 * Turing Machine 

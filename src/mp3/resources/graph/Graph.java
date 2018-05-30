@@ -1,4 +1,4 @@
-package mp3.graph;
+package mp3.resources.graph;
 
 /**
 * Graph ADT 
@@ -7,9 +7,9 @@ package mp3.graph;
 * For the latest version of this library please visit: https://github.com/amirbawab/GraphADT
 * License: MIT License ~ Please read License.txt for more information about the usage of this software
 * */
-import mp3.graph.doublyLinkedList.DLLNode;
-import mp3.graph.doublyLinkedList.DoublyLinkedList;
-import mp3.graph.doublyLinkedList.NodeIterator;
+import mp3.resources.graph.doublyLinkedList.DLLNode;
+import mp3.resources.graph.doublyLinkedList.DoublyLinkedList;
+import mp3.resources.graph.doublyLinkedList.NodeIterator;
 
 import java.io.File;
 import java.io.FileNotFoundException;

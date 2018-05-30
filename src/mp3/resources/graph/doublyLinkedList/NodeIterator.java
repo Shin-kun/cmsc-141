@@ -1,4 +1,4 @@
-package mp3.graph.doublyLinkedList;
+package mp3.resources.graph.doublyLinkedList;
 
 /**
 * Graph ADT 

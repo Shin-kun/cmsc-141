@@ -1,6 +1,6 @@
-package mp3.graph.doublyLinkedList;
+package mp3.resources.graph.doublyLinkedList;
 
-import mp3.graph.doublyLinkedList.DLLNode;
+import mp3.resources.graph.doublyLinkedList.DLLNode;
 
 /**
 * Graph ADT 

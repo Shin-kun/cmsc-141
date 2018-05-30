@@ -1,10 +1,10 @@
-package mp3.turingMachine;
-import mp3.graph.Edge;
-import mp3.graph.Graph;
-import mp3.graph.Vertex;
-import mp3.graph.doublyLinkedList.DLLNode;
-import mp3.graph.doublyLinkedList.DoublyLinkedList;
-import mp3.graph.doublyLinkedList.NodeIterator;
+package mp3.resources.turingMachine;
+import mp3.resources.graph.Edge;
+import mp3.resources.graph.Graph;
+import mp3.resources.graph.Vertex;
+import mp3.resources.graph.doublyLinkedList.DLLNode;
+import mp3.resources.graph.doublyLinkedList.DoublyLinkedList;
+import mp3.resources.graph.doublyLinkedList.NodeIterator;
 
 import java.io.File;
 import java.io.FileNotFoundException;

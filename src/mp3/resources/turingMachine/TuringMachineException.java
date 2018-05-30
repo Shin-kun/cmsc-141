@@ -1,4 +1,4 @@
-package mp3.turingMachine;
+package mp3.resources.turingMachine;
 
 /**
 * Turing Machine 

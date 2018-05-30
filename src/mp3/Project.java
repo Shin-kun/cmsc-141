@@ -2,7 +2,7 @@ package mp3;
 
 import java.io.FileNotFoundException;
 
-import mp3.turingMachine.TuringMachine;
+import mp3.resources.turingMachine.TuringMachine;
 
 public class Project {
 	private static final String FILENAME = "src/mp3/power";
