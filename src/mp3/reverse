@@ -1,0 +1,28 @@
+prefix = q
+states = 7
+blank = $
+initial = 0
+final = 6
+;
+0,0:a,a,R
+0,0:b,b,R
+0,1:$,$,L
+1,1:x,x,L
+1,2:a,x,R
+1,3:b,x,R
+1,5:$,$,R
+2,2:x,x,R
+2,2:a,a,R
+2,2:b,b,R
+2,4:$,a,L
+3,3:a,a,R
+3,3:b,b,R
+3,3:x,x,R
+3,4:$,b,L
+4,4:a,a,L
+4,4:b,b,L
+4,1:x,x,L
+5,5:x,$,R
+5,6:a,a,N
+5,6:b,b,N
+;
