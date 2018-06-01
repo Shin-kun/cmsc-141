@@ -154,19 +154,18 @@ public class TuringMachine {
 	 * Process a string
 	 * @param input
 	 */
-	public boolean process(String input){
+	public boolean process(String input, Scanner sc){
 
 	    boolean printThis = true;
         int print;
-        Scanner scanThis = new Scanner(System.in);
+        
         System.out.println("Would you like to print the process? 1 for yes and 2 for no");
-        print = scanThis.nextInt();
+        print = sc.nextInt();
         if (print == 1){
             printThis = true;
         }else{
             printThis = false;
         }
-
         // An initial state is required to start
 		if(initialState == null)
 			throw new TuringMachineException("An initial state is required");
@@ -196,6 +195,13 @@ public class TuringMachine {
 
 			//print current
             if (printThis){
+                try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
                 String pointerLine = "";
                 DLLNode<Character> currentNode = tape.first();
                 while(currentNode != null){
@@ -245,9 +251,6 @@ public class TuringMachine {
 					// Move state
 					currentState = currentTransition.getV2().getData();
 					transitionFound = true;
-				
-				
-					//System.out.println(getTapeSnapshot());
 				
 				}
 			}

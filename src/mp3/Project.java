@@ -1,4 +1,11 @@
 package mp3;
+/*
+	Collaborators: Mary Danielle Amora
+               Michael Loewe Alivio
+               Michael Jimro Quiambao
+               Paul Christian Kiunisala
+*/
+// resources : https://github.com/amirbawab/Turing-Machine-simulator
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -9,80 +16,89 @@ public class Project {
 	private static final String REVERSE = "src/mp3/reverse";
 
 	public static void main(String[] args) {
-
-	    while (true){
-
-            int choice = 1;
-
-            System.out.println("Menu:\n1. Power\n2. Reverse String\n\nChoice: ");
+		menu();
+	}
+	
+	public static void menu() {
+		System.out.println("PROJECT IN CMSC 141\n");
+		
+		try {
             Scanner scan = new Scanner(System.in);
-            choice = scan.nextInt();
+            int choice;
 
-            if (choice == 1){
-                String equation = "";
-                int x, y;
-                System.out.println("Compute for power: x^y");
-                System.out.print("Enter x: ");
-                x = scan.nextInt();
-                System.out.print("Enter y: ");
-                y = scan.nextInt();
-                System.out.println("Equation: "+x+"^"+y);
+            while (true){
+	            System.out.print("Menu:\n1. Power\n2. Reverse String\n3. Exit\n\nChoice: ");
+	            choice = scan.nextInt();
 
+	            if (choice == 1){
+	                String equation = "";
+	                boolean choose = true;
+	            	int x = 1, y = 1;
+	                
+	                while(choose) {
+	                	choose = false;
+	                    System.out.println("Compute for power: x^y");
+	                    System.out.print("Enter a positive x: ");
+	                    x = scan.nextInt();
+	                    System.out.print("Enter a positive y: ");
+	                    y = scan.nextInt();
+	                    if(x < 0 || y < 0 || x == 0 || y == 0) {
+	                    	choose = true;
+	                    }
+	                }
+                    System.out.println("Equation: "+x+"^"+y);
+	                
+	                for (int ex = 0; ex < x; ex++){
+	                    equation = equation+"1";
+	                }
+	                equation = equation+"#";
 
-                for (int ex = 0; ex < x; ex++){
-                    equation = equation+"1";
-                }
-                equation = equation+"#";
+	                for (int way = 0; way < y; way++){
+	                    equation = equation+"1";
+	                }
 
-                for (int way = 0; way < y; way++){
-                    equation = equation+"1";
-                }
+	                System.out.println(equation);
+	                computePower(equation, scan);
+		            System.out.println("PROCESS DONE\n\n\n");
 
-                System.out.println(equation);
-                try {
-                    computePower(equation);
+	            } else if (choice == 2){
+	            	
+	            	boolean choose = true;
+	            	String equation = "";
+	                while(choose) {
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+	                    System.out.print("Please input a string with symbols a and b only: ");
+	                    equation = scan.next();
+	                	
+	                	choose = false;
+	                    for(int i = 0; i < equation.length(); i++) {
+	                        if(!(equation.charAt(i) == 'a' || equation.charAt(i) == 'b')) {
+	                            choose = true;
+	                            break;
+	                        } 
+	                    }
+	                }
+	            	reverseString(equation, scan);
+		            System.out.println("PROCESS DONE\n\n\n");
 
-            }else if (choice == 2){
+	            } else if (choice == 3){
+	                System.out.println("bye!");
+	                break;
+	            }
+	        }
+        	scan.close();
 
-                System.out.println("Enter string: ");
-                Scanner sc = new Scanner(System.in);
-                String equation = sc.nextLine();
-
-                try {
-                    doReverse(equation);
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            System.out.println("PROCESS DONE");
-            System.out.println("Process again? Press 1 for yes and 2 for no");
-            if (scan.nextInt() == 1){
-                //do nothing
-            }else{
-                System.out.println("bye!");
-                break;
-            }
-
+	    }  catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 	}
 	
-	public static void computePower(String equation) throws FileNotFoundException{
-		// Import addition machine
+	public static void computePower(String equation, Scanner sc) throws FileNotFoundException{
+		// Import power machine
 		TuringMachine power = TuringMachine.inParser(POWER);
 
-		// Print addition machine
-//		System.out.println("Machine content:");
-//		System.out.println(power);
-
 		// Process input
-        power.process(equation);
+        power.process(equation, sc);
 		
 		// Print the tape content after the process
 		System.out.println("Final Tape content after processing for equation "+equation+":");
@@ -90,23 +106,17 @@ public class Project {
 		
 	}
 	
-	public static void doReverse(String equation) throws FileNotFoundException {
-		// Import addition machine
-
-
+	public static void reverseString(String equation, Scanner sc) throws FileNotFoundException {
+		// Import reverse machine
 
         TuringMachine reverse = TuringMachine.inParser(REVERSE);
 
-
-
-		//Scanner sc = new Scanner(System.in);
 		// Process input
-		reverse.process(equation);
+		reverse.process(equation, sc);
 		
 		// Print the tape content after the process
 		System.out.println("Tape content after processing :"+equation);
 		System.out.println(reverse.getTapeSnapshot());
 		
 	}
-
 }
