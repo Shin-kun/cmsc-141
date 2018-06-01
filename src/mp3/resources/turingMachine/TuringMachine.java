@@ -155,8 +155,19 @@ public class TuringMachine {
 	 * @param input
 	 */
 	public boolean process(String input){
-		
-		// An initial state is required to start
+
+	    boolean printThis = true;
+        int print;
+        Scanner scanThis = new Scanner(System.in);
+        System.out.println("Would you like to print the process? 1 for yes and 2 for no");
+        print = scanThis.nextInt();
+        if (print == 1){
+            printThis = true;
+        }else{
+            printThis = false;
+        }
+
+        // An initial state is required to start
 		if(initialState == null)
 			throw new TuringMachineException("An initial state is required");
 		
@@ -181,7 +192,24 @@ public class TuringMachine {
 		
 		// While the current state is not final
 		while(! currentState.isFinal()){
-			
+
+
+			//print current
+            if (printThis){
+                String pointerLine = "";
+                DLLNode<Character> currentNode = tape.first();
+                while(currentNode != null){
+                    if(currentNode == tapeHead)
+                        pointerLine += " _ ";
+                    else
+                        pointerLine += "   ";
+                    currentNode = currentNode.next();
+                }
+                System.out.println(""+ pointerLine+ "\n"+tape.toString());
+            }
+
+
+
 			// Record steps
 			lastProcess += String.format("%s #%d\n", getTapeSnapshot(), ++stepCounter);
 			
@@ -273,7 +301,6 @@ public class TuringMachine {
 	
 	/**
 	 * Remove old initial state (if any). Choose an initial state
-	 * @param stateID
 	 */
 	public void chooseInitialState(State state){
 		
@@ -358,7 +385,6 @@ public class TuringMachine {
 	/**
 	 * Import a machine to an existing machine
 	 * @param machine
-	 * @param keepState (if false, all cloned states will be set to NORMAL)
 	 */
 	public void concatinate(TuringMachine machine){
 		
